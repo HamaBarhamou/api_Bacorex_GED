@@ -20,4 +20,15 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class DAOSerializer(serializers.ModelSerializer):
     class Meta:
         model = DAO
-        field = ['id', 'id_DAO', 'description_DAO']
+        fields = [
+            'id', 
+            'id_DAO', 
+            'description_DAO', 
+            'created_at', 
+            'updated_at',
+            'publication_date',
+            'date_submitted',
+            'document_link',
+            'departement_head_approval',
+            'ceo_approval'
+        ]

@@ -34,7 +34,7 @@ def DAO_list(request):
     """
     List of DAO object
     """
-    print("hello word")
+    
     if request.method == 'GET':
         dao = DAO.objects.all()
         serializer = DAOSerializer(dao, many = True)
