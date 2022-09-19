@@ -8,6 +8,8 @@ from DAO.serializers import UserSerializer, GroupSerializer
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from rest_framework.decorators import api_view
+from rest_framework import status, generics
 from DAO.serializers import DAOSerializer
 from DAO.models import DAO
 
@@ -29,12 +31,21 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-#@csrf_exempt
+class DaoList(generics.ListCreateAPIView):
+    queryset = DAO.objects.all()
+    serializer_class = DAOSerializer
+
+class DaoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DAO.objects.all()
+    serializer_class = DAOSerializer
+
+"""
+@api_view(['GET', 'POST'])
 def DAO_list(request):
-    """
-    List of DAO object
-    """
     
+    List of DAO object
+    
+
     if request.method == 'GET':
         dao = DAO.objects.all()
         serializer = DAOSerializer(dao, many = True)
@@ -44,5 +55,6 @@ def DAO_list(request):
         serializer = DAOSerializer(data = data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status = 201)
-        return JsonResponse(serializer.errors, status = 404)
+            return JsonResponse(serializer.data, status = status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+"""
