@@ -45,8 +45,8 @@ class DaoList(generics.ListCreateAPIView):
 class DaoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DAO.objects.all()
     serializer_class = DAOSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
-    #permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
 """"
 class UserList(generics.ListAPIView):

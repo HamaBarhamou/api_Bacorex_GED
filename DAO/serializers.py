@@ -20,7 +20,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name']
 
 class DAOSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
+    #owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = DAO
         fields = [
@@ -34,5 +34,5 @@ class DAOSerializer(serializers.ModelSerializer):
             'document_link',
             'departement_head_approval',
             'ceo_approval',
-            'owner'
+            #'owner'
         ]
