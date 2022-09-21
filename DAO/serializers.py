@@ -7,9 +7,11 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    #dao = serializers.PrimaryKeyRelatedField(many=True, queryset=DAO.objects.all())
     class Meta:
         model = User
         fields = ['url', 'username', 'email', 'groups']
+        #fields = ['id', 'username', 'dao']
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
@@ -18,6 +20,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'name']
 
 class DAOSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = DAO
         fields = [
@@ -30,5 +33,6 @@ class DAOSerializer(serializers.ModelSerializer):
             'date_submitted',
             'document_link',
             'departement_head_approval',
-            'ceo_approval'
+            'ceo_approval',
+            'owner'
         ]

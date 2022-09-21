@@ -9,9 +9,10 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
-from rest_framework import status, generics
+from rest_framework import status, generics, mixins
 from DAO.serializers import DAOSerializer
 from DAO.models import DAO
+from DAO.permissions import IsOwnerOrReadOnly
 
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
@@ -24,7 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    """
+    """"
     API endpoint that allows groups to be viewed or edited.
     """
     queryset = Group.objects.all()
@@ -32,29 +33,27 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 class DaoList(generics.ListCreateAPIView):
+#class DaoList(generics.ListAPIView):
     queryset = DAO.objects.all()
     serializer_class = DAOSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    #def perform_create(self, serializer):
+    #    serializer.save(owner=self.request.user)
+
 
 class DaoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DAO.objects.all()
     serializer_class = DAOSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    #permission_classes = [permissions.IsAuthenticated]
 
-"""
-@api_view(['GET', 'POST'])
-def DAO_list(request):
-    
-    List of DAO object
-    
+""""
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    if request.method == 'GET':
-        dao = DAO.objects.all()
-        serializer = DAOSerializer(dao, many = True)
-        return JsonResponse(serializer.data, safe = False)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = DAOSerializer(data = data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status = status.HTTP_201_CREATED)
-        return JsonResponse(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 """

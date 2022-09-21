@@ -3,6 +3,7 @@ from statistics import mode
 from xml.dom.minidom import Document
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth.models import User
 
 # Create your models here.
 class DAO(models.Model):
@@ -15,6 +16,8 @@ class DAO(models.Model):
     document_link = models.CharField(max_length=300)
     departement_head_approval = models.BooleanField()
     ceo_approval = models.BooleanField()
+    #owner = models.ForeignKey('auth.User', related_name='DAO', on_delete=models.CASCADE)
+    #owner = models.ForeignKey(User, related_name='DAO', on_delete=models.CASCADE)
 
     def __str__(self):
         return ("{} \n {}".format(self.id_DAO, self.description_DAO))
